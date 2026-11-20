@@ -1,0 +1,234 @@
+/* ==========================================================================
+   typography-system / tokens.css
+   --------------------------------------------------------------------------
+   唯一事实来源。页面与组件只允许使用 var(--text-*)、var(--font-*)、
+   var(--space-*)、var(--weight-*)。不要在这里之外写裸 font-size。
+
+   根字号保持 100%（不要给 html 设 px），所有尺寸用 rem。
+   行高用无单位倍数；中文为默认值，英文主语言页面用 :root:lang(en) 覆盖。
+   中英混排的段落继承所在页面的行高（中文值），这是有意为之：
+   更松的行高对英文无害，反过来会挤。
+   ========================================================================== */
+
+:root {
+  /* 只负责排版，不接管颜色与主题；color-scheme 由应用自己声明。 */
+
+  /* ---------- 字体族 ---------- */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI",
+    Roboto, "Helvetica Neue", Arial,
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans CJK SC", "Source Han Sans SC", "WenQuanYi Micro Hei",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+
+  --font-serif:
+    "Source Serif 4", "Noto Serif SC", "Source Han Serif SC",
+    "Songti SC", "SimSun", serif;
+
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", "Noto Sans Mono CJK SC", monospace;
+
+  /* ---------- 字重 ---------- */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---------- 字距 ---------- */
+  --tracking-none: 0;
+  --tracking-tight: -0.02em;   /* 仅英文大字号 */
+  --tracking-caps: 0.06em;     /* 仅英文全大写 */
+
+  /* ---------- 字号（标准密度） ---------- */
+  --text-display-size: 3rem;        /* 48 */
+  --text-page-size: 1.75rem;        /* 28 */
+  --text-section-size: 1.25rem;     /* 20 */
+  --text-body-size: 1rem;           /* 16 */
+  --text-label-size: 0.875rem;      /* 14 */
+  --text-caption-size: 0.75rem;     /* 12 */
+
+  /* ---------- 行高（中文默认） ---------- */
+  --text-display-leading: 1.1667;   /* 48 -> 56 */
+  --text-page-leading: 1.4286;      /* 28 -> 40 */
+  --text-section-leading: 1.5;      /* 20 -> 30 */
+  --text-body-leading: 1.75;        /* 16 -> 28 */
+  --text-label-leading: 1.5714;     /* 14 -> 22 */
+  --text-caption-leading: 1.5;      /* 12 -> 18 */
+
+  /* ---------- 间距 ---------- */
+  --space-1: 0.25rem;   /*  4 */
+  --space-2: 0.5rem;    /*  8 */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-6: 1.5rem;    /* 24 */
+  --space-8: 2rem;      /* 32 */
+  --space-12: 3rem;     /* 48 */
+  --space-16: 4rem;     /* 64 */
+
+  /* ---------- 行宽 ---------- */
+  --measure: 34em;      /* 约 34 汉字 / 68 拉丁字符 */
+  --measure-narrow: 28em;
+}
+
+/* ==========================================================================
+   英文主语言：整个页面把行高收紧一档
+   （混合页面里的英文段落继承中文行高，不做局部覆盖）
+   ========================================================================== */
+:root:lang(en) {
+  --text-display-leading: 1.0833;   /* 48 -> 52 */
+  --text-page-leading: 1.2857;      /* 28 -> 36 */
+  --text-section-leading: 1.4;      /* 20 -> 28 */
+  --text-body-leading: 1.5;         /* 16 -> 24 */
+  --text-label-leading: 1.4286;     /* 14 -> 20 */
+  --text-caption-leading: 1.3333;   /* 12 -> 16 */
+}
+
+/* ==========================================================================
+   密度：只改字号与行高，不改角色与字重
+   ========================================================================== */
+
+[data-density="reading"] {
+  --text-page-size: 2rem;            /* 32 */
+  --text-page-leading: 1.375;        /* 44 */
+  --text-section-size: 1.5rem;       /* 24 */
+  --text-section-leading: 1.5;       /* 36 */
+  --text-body-size: 1.125rem;        /* 18 */
+  --text-body-leading: 1.7778;       /* 32 */
+  --text-label-size: 0.9375rem;      /* 15 */
+  --text-label-leading: 1.6;         /* 24 */
+  --text-caption-size: 0.8125rem;    /* 13 */
+  --text-caption-leading: 1.5385;    /* 20 */
+}
+
+:root:lang(en) [data-density="reading"] {
+  --text-page-leading: 1.25;         /* 32 -> 40 */
+  --text-section-leading: 1.3333;    /* 24 -> 32 */
+  --text-body-leading: 1.5556;       /* 18 -> 28 */
+  --text-label-leading: 1.4667;      /* 15 -> 22 */
+}
+
+[data-density="compact"] {
+  --text-page-size: 1.5rem;          /* 24 */
+  --text-page-leading: 1.4167;       /* 34 */
+  --text-section-size: 1.125rem;     /* 18 */
+  --text-section-leading: 1.4444;    /* 26 */
+  --text-body-size: 0.875rem;        /* 14 */
+  --text-body-leading: 1.5714;       /* 22 */
+  --text-label-size: 0.8125rem;      /* 13 */
+  --text-label-leading: 1.5385;      /* 20 */
+  --text-caption-size: 0.75rem;      /* 12 */
+  --text-caption-leading: 1.5;       /* 18 */
+}
+
+:root:lang(en) [data-density="compact"] {
+  --text-page-leading: 1.3333;       /* 24 -> 32 */
+  --text-section-leading: 1.3333;    /* 18 -> 24 */
+  --text-body-leading: 1.4286;       /* 14 -> 20 */
+  --text-label-leading: 1.3846;      /* 13 -> 18 */
+}
+
+/* ==========================================================================
+   角色工具类：组件里优先复用这些类，而不是重写 font-size
+   ========================================================================== */
+
+.text-display,
+.text-page,
+.text-section,
+.text-body,
+.text-label,
+.text-caption {
+  font-family: var(--font-sans);
+  letter-spacing: var(--tracking-none);
+  text-wrap: pretty;
+}
+
+.text-display {
+  font-size: var(--text-display-size);
+  line-height: var(--text-display-leading);
+  font-weight: var(--weight-semibold);
+}
+
+.text-page {
+  font-size: var(--text-page-size);
+  line-height: var(--text-page-leading);
+  font-weight: var(--weight-semibold);
+  text-wrap: balance;
+}
+
+.text-section {
+  font-size: var(--text-section-size);
+  line-height: var(--text-section-leading);
+  font-weight: var(--weight-semibold);
+  text-wrap: balance;
+}
+
+.text-body {
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-leading);
+  font-weight: var(--weight-regular);
+}
+
+.text-label {
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-leading);
+  font-weight: var(--weight-medium);
+}
+
+.text-caption {
+  font-size: var(--text-caption-size);
+  line-height: var(--text-caption-leading);
+  font-weight: var(--weight-regular);
+}
+
+/* 英文大标题可收紧字距；中文不要 */
+:root:lang(en) .text-display,
+:root:lang(en) .text-page {
+  letter-spacing: var(--tracking-tight);
+}
+
+/* ==========================================================================
+   正文容器：行宽、段距、标点与断行
+   ========================================================================== */
+
+.prose {
+  max-inline-size: var(--measure);
+  line-break: strict;
+  overflow-wrap: break-word;
+  text-autospace: normal;      /* 渐进增强：CJK 与西文之间自动留隙 */
+  text-spacing-trim: normal;   /* 折叠相邻标点；trim-start 更紧，按需启用 */
+}
+
+.prose > * + * {
+  margin-block-start: 1em;
+}
+
+.prose :lang(zh) {
+  letter-spacing: 0;
+}
+
+/* 表格与统计数字 */
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* 代码 */
+.code {
+  font-family: var(--font-mono);
+  font-size: var(--text-label-size);
+  line-height: 1.65;
+  font-variant-ligatures: none;
+}
+
+/* ==========================================================================
+   响应式：只在断点切换密度（<main data-density="compact">），
+   不 fluid-scale 正文。移动端输入框单独设为 16px，避免 iOS 聚焦缩放。
+   ========================================================================== */
+
+/* 无障碍：尊重减少动效（排版本身不涉及动效，此处仅作占位约定） */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}

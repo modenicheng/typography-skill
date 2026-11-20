@@ -1,0 +1,3045 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="中英双语文排系统的视觉规格样本：角色、阶梯、双语度量、组件、间距刻度与反模式。">
+  <title>中英双语文排系统 · 视觉规格 v0.1</title>
+  <style>
+    /* ------------------------------------------------------------------
+       Tokens
+       本页所有文字大小、行高与间距都从这些变量取值。
+       反模式区内的裸值仅作教学反例，不进入系统。
+       typography-audit-disable-file — 规格标本页：含反例与密度对照
+       ------------------------------------------------------------------ */
+    :root {
+      --paper: #F7F5F0;
+      --ink: #16150F;
+      --muted: #6B675C;
+      --rule: #DDD8CC;
+      --accent: #B23A2A;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+        "Source Han Sans SC", sans-serif;
+      --font-serif: "Songti SC", "Noto Serif SC", "Source Han Serif SC", SimSun, serif;
+      --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", "Cascadia Mono",
+        Consolas, "Liberation Mono", monospace;
+
+      --weight-regular: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+
+      --text-display-size: 3rem;
+      --text-display-leading: 1.1667;
+      --text-display-leading-en: 1.0833;
+
+      --text-page-size: 1.75rem;
+      --text-page-leading: 2.5rem;
+      --text-page-leading-en: 2.25rem;
+
+      --text-section-size: 1.25rem;
+      --text-section-leading: 1.875rem;
+      --text-section-leading-en: 1.75rem;
+
+      --text-body-size: 1rem;
+      --text-body-leading: 1.75;
+      --text-body-leading-en: 1.5;
+
+      --text-label-size: 0.875rem;
+      --text-label-leading: 1.5714;
+      --text-label-leading-en: 1.4286;
+
+      --text-caption-size: 0.75rem;
+      --text-caption-leading: 1.5;
+      --text-caption-leading-en: 1.3333;
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.5rem;
+      --space-6: 2rem;
+      --space-7: 3rem;
+      --space-8: 4rem;
+
+      --page-max: 1120px;
+      --gutter: var(--space-8);
+    }
+
+    /* ------------------------------------------------------------------
+       Base
+       text-autospace 是 CSS Text 4 的标准能力：浏览器负责在中西文之间
+       插入约 1/4 字宽的间隙。不要因此在 HTML 里手打空格。
+       ------------------------------------------------------------------ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 100%;
+      text-autospace: normal;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      font-weight: var(--weight-regular);
+      line-break: strict;
+      word-break: normal;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--paper);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    dl,
+    dd,
+    figure,
+    figcaption,
+    blockquote {
+      margin: 0;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    button,
+    input {
+      border-radius: 0;
+      font: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-color: var(--rule);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent);
+    }
+
+    code,
+    .mono {
+      font-family: var(--font-mono);
+      font-weight: var(--weight-regular);
+    }
+
+    time,
+    .tabular {
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    :where(a, button, input, [tabindex]):focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: var(--space-3);
+      left: var(--space-3);
+      z-index: 20;
+      padding: var(--space-2) var(--space-3);
+      background: var(--ink);
+      color: var(--paper);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      text-decoration: none;
+      transform: translateY(-220%);
+    }
+
+    .skip-link:focus-visible {
+      transform: translateY(0);
+    }
+
+    /* ------------------------------------------------------------------
+       Layout
+       ------------------------------------------------------------------ */
+    .shell {
+      width: min(calc(100% - (2 * var(--gutter))), var(--page-max));
+      margin-inline: auto;
+    }
+
+    .grid12 {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--space-4);
+      row-gap: var(--space-4);
+    }
+
+    .grid12 > * {
+      min-width: 0;
+    }
+
+    .caption {
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .no-break {
+      white-space: nowrap;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .cover .eyebrow::before {
+      content: "";
+      flex: 0 0 auto;
+      width: var(--space-2);
+      height: var(--space-2);
+      background: var(--accent);
+    }
+
+    .note-line {
+      max-width: 44em;
+      margin-top: var(--space-3);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    .note-line code {
+      color: var(--ink);
+    }
+
+    .table-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+    }
+
+    .scroll-hint {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .scroll-hint {
+        display: block;
+        margin-top: var(--space-3);
+        color: var(--muted);
+        font-size: var(--text-caption-size);
+        line-height: var(--text-caption-leading);
+      }
+    }
+
+    /* ------------------------------------------------------------------
+       Cover
+       ------------------------------------------------------------------ */
+    .cover {
+      padding-top: var(--space-6);
+      padding-bottom: var(--space-7);
+    }
+
+    .cover-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cover-mark {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .cover-hero {
+      align-items: end;
+      padding-top: var(--space-8);
+    }
+
+    .cover-copy {
+      grid-column: 1 / span 8;
+    }
+
+    .cover-title {
+      max-width: 100%;
+      font-family: var(--font-serif);
+      font-size: var(--text-display-size);
+      line-height: var(--text-display-leading);
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .cover-title-break {
+      display: inline;
+    }
+
+    .cover-subtitle {
+      margin-top: var(--space-3);
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-medium);
+      letter-spacing: 0;
+    }
+
+    .cover-mode {
+      grid-column: 10 / span 3;
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--ink);
+    }
+
+    .cover-mode-title {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .cover-mode-copy {
+      margin-top: var(--space-2);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      letter-spacing: 0;
+    }
+
+    .cover-foot {
+      align-items: start;
+      margin-top: var(--space-8);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--rule);
+    }
+
+    .cover-intro {
+      grid-column: 1 / span 7;
+      max-width: 34em;
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+    }
+
+    .cover-meta {
+      grid-column: 9 / span 4;
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: var(--space-5);
+      justify-content: end;
+      text-align: left;
+    }
+
+    .cover-meta dt {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .cover-meta dd {
+      margin-top: var(--space-1);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ------------------------------------------------------------------
+       Chapters
+       编号在细线上方；标题在线下方。
+       ------------------------------------------------------------------ */
+    .chapter {
+      margin-top: var(--space-7);
+    }
+
+    .chapter-index {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chapter-rule {
+      margin-top: var(--space-2);
+      border-top: 1px solid var(--rule);
+    }
+
+    .chapter-title {
+      max-width: 26em;
+      margin-top: var(--space-4);
+      font-size: var(--text-page-size);
+      line-height: var(--text-page-leading);
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .chapter-lede {
+      max-width: 36em;
+      margin-top: var(--space-3);
+      color: var(--muted);
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      text-wrap: pretty;
+    }
+
+    .chapter-lede code {
+      color: var(--ink);
+    }
+
+    /* ------------------------------------------------------------------
+       00 · Premise
+       ------------------------------------------------------------------ */
+    .premise {
+      margin-top: var(--space-7);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      column-gap: 0;
+    }
+
+    .premise-item {
+      grid-column: span 4;
+      padding: var(--space-4) var(--space-4) var(--space-5) 0;
+    }
+
+    .premise-item + .premise-item {
+      border-left: 1px solid var(--rule);
+      padding-left: var(--space-4);
+    }
+
+    .premise-kicker {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+      letter-spacing: 0.06em;
+    }
+
+    .premise-title {
+      margin-top: var(--space-2);
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0;
+    }
+
+    .premise-copy {
+      max-width: 22em;
+      margin-top: var(--space-2);
+      color: var(--muted);
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+    }
+
+    /* ------------------------------------------------------------------
+       01 · Roles
+       ------------------------------------------------------------------ */
+    .role-table-wrap {
+      margin-top: var(--space-6);
+    }
+
+    .role-table {
+      min-width: 44rem;
+      table-layout: fixed;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .role-table .col-role {
+      width: 18%;
+    }
+
+    .role-table .col-purpose {
+      width: 44%;
+    }
+
+    .role-table .col-zh,
+    .role-table .col-en {
+      width: 14%;
+    }
+
+    .role-table .col-weight {
+      width: 10%;
+    }
+
+    .role-table thead th {
+      padding: var(--space-2) var(--space-3);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      text-align: left;
+      vertical-align: bottom;
+    }
+
+    .role-table tbody th,
+    .role-table tbody td {
+      padding: var(--space-4) var(--space-3);
+      border-bottom: 1px solid var(--rule);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .role-table thead th:first-child,
+    .role-table tbody th:first-child {
+      padding-left: 0;
+    }
+
+    .role-table thead th:last-child,
+    .role-table tbody td:last-child {
+      padding-right: 0;
+    }
+
+    .role-table .is-num {
+      text-align: right;
+    }
+
+    .role-token {
+      display: block;
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      letter-spacing: 0;
+    }
+
+    .role-token-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-2);
+    }
+
+    .role-optional {
+      padding: 0 var(--space-1);
+      border: 1px solid var(--rule);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      font-weight: var(--weight-medium);
+      line-height: var(--text-caption-leading);
+      white-space: nowrap;
+    }
+
+    .role-meta {
+      display: block;
+      margin-top: var(--space-1);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+      letter-spacing: 0;
+    }
+
+    .role-purpose {
+      max-width: 30em;
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .role-number {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-regular);
+      white-space: nowrap;
+    }
+
+    .table-footnote {
+      max-width: 40em;
+      margin-top: var(--space-3);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    /* ------------------------------------------------------------------
+       02 · Scale
+       ------------------------------------------------------------------ */
+    .scale-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+    }
+
+    .scale-intro {
+      max-width: 34em;
+      color: var(--muted);
+    }
+
+    .segmented {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--rule);
+      background: transparent;
+    }
+
+    .segmented-label {
+      display: flex;
+      align-items: center;
+      padding-inline: var(--space-3);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .segmented button {
+      min-height: 2.75rem;
+      padding: var(--space-2) var(--space-3);
+      border: 0;
+      border-left: 1px solid var(--rule);
+      background: transparent;
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      letter-spacing: 0;
+    }
+
+    .segmented button:hover {
+      color: var(--ink);
+    }
+
+    .segmented button[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .segmented button:focus-visible {
+      outline-offset: -3px;
+    }
+
+    .scale-stage {
+      margin-top: var(--space-6);
+    }
+
+    .scale-legend,
+    .specimen {
+      display: grid;
+      /* 英文样本拿到稍宽的栏位，避免 display 标题在 48px 下不必要地折行。 */
+      grid-template-columns: minmax(7.5rem, 1fr) 2.35fr 2.75fr;
+      column-gap: var(--space-4);
+    }
+
+    .scale-legend {
+      padding-bottom: var(--space-2);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .specimen {
+      align-items: start;
+      padding-block: var(--space-5);
+      border-top: 1px solid var(--rule);
+    }
+
+    .specimen:last-child {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .specimen-token {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+      letter-spacing: 0;
+    }
+
+    .specimen-token code {
+      display: block;
+      color: var(--ink);
+    }
+
+    .specimen-token span {
+      display: block;
+      margin-top: var(--space-1);
+    }
+
+    .specimen-cn,
+    .specimen-en {
+      min-width: 0;
+      font-size: var(--spec-size);
+      font-weight: var(--spec-weight);
+      letter-spacing: 0;
+    }
+
+    .specimen-cn {
+      line-height: var(--spec-leading);
+    }
+
+    .specimen-en {
+      padding-left: var(--space-4);
+      border-left: 1px solid var(--rule);
+      line-height: var(--spec-leading-en);
+    }
+
+    .specimen-cn span,
+    .specimen-en span {
+      display: block;
+    }
+
+    .role-display {
+      --spec-size: var(--text-display-size);
+      --spec-leading: var(--text-display-leading);
+      --spec-leading-en: var(--text-display-leading-en);
+      --spec-weight: var(--weight-semibold);
+    }
+
+    .role-page {
+      --spec-size: var(--text-page-size);
+      --spec-leading: var(--text-page-leading);
+      --spec-leading-en: var(--text-page-leading-en);
+      --spec-weight: var(--weight-semibold);
+    }
+
+    .role-section {
+      --spec-size: var(--text-section-size);
+      --spec-leading: var(--text-section-leading);
+      --spec-leading-en: var(--text-section-leading-en);
+      --spec-weight: var(--weight-semibold);
+    }
+
+    .role-body {
+      --spec-size: var(--text-body-size);
+      --spec-leading: var(--text-body-leading);
+      --spec-leading-en: var(--text-body-leading-en);
+      --spec-weight: var(--weight-regular);
+    }
+
+    .role-label {
+      --spec-size: var(--text-label-size);
+      --spec-leading: var(--text-label-leading);
+      --spec-leading-en: var(--text-label-leading-en);
+      --spec-weight: var(--weight-medium);
+    }
+
+    .role-caption {
+      --spec-size: var(--text-caption-size);
+      --spec-leading: var(--text-caption-leading);
+      --spec-leading-en: var(--text-caption-leading-en);
+      --spec-weight: var(--weight-regular);
+    }
+
+    /* 密度只覆盖这一个演示块；角色与字重不变。 */
+    #type-scale[data-density="reading"] {
+      --text-page-size: 2rem;
+      --text-page-leading: 2.75rem;
+      --text-page-leading-en: 2.75rem;
+      --text-section-size: 1.5rem;
+      --text-section-leading: 2.25rem;
+      --text-section-leading-en: 2.25rem;
+      --text-body-size: 1.125rem;
+      --text-body-leading: 2rem;
+      --text-body-leading-en: 1.75rem;
+      --text-label-size: 0.9375rem;
+      --text-label-leading: 1.5rem;
+      --text-label-leading-en: 1.5rem;
+      --text-caption-size: 0.8125rem;
+      --text-caption-leading: 1.25rem;
+      --text-caption-leading-en: 1.25rem;
+    }
+
+    #type-scale[data-density="compact"] {
+      --text-page-size: 1.5rem;
+      --text-page-leading: 2.125rem;
+      --text-page-leading-en: 2.125rem;
+      --text-section-size: 1.125rem;
+      --text-section-leading: 1.625rem;
+      --text-section-leading-en: 1.625rem;
+      --text-body-size: 0.875rem;
+      --text-body-leading: 1.375rem;
+      --text-body-leading-en: 1.25rem;
+      --text-label-size: 0.8125rem;
+      --text-label-leading: 1.25rem;
+      --text-label-leading-en: 1.25rem;
+      --text-caption-size: 0.75rem;
+      --text-caption-leading: 1.125rem;
+      --text-caption-leading-en: 1.125rem;
+    }
+
+    /* ------------------------------------------------------------------
+       03 · Two writing systems
+       ------------------------------------------------------------------ */
+    .submodule {
+      margin-top: var(--space-7);
+    }
+
+    .submodule-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--rule);
+    }
+
+    .submodule-heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-3);
+    }
+
+    .submodule-title {
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0;
+    }
+
+    .submodule-kicker {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      letter-spacing: 0.06em;
+    }
+
+    .submodule-note {
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    .compare-two {
+      margin-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+      column-gap: 0;
+    }
+
+    .compare-col {
+      grid-column: span 6;
+      padding: var(--space-4) var(--space-4) 0 0;
+    }
+
+    .compare-col + .compare-col {
+      padding-right: 0;
+      padding-left: var(--space-4);
+      border-left: 1px solid var(--rule);
+    }
+
+    .compare-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .compare-head strong {
+      color: var(--ink);
+      font-weight: var(--weight-regular);
+    }
+
+    .mixed-sample {
+      max-width: 34em;
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      text-wrap: pretty;
+    }
+
+    .leading-tall {
+      line-height: var(--text-body-leading);
+    }
+
+    .leading-short {
+      line-height: var(--text-body-leading-en);
+    }
+
+    .measure-list {
+      margin-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+    }
+
+    .measure-item {
+      padding-block: var(--space-4);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .measure-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .measure-meta code {
+      color: var(--ink);
+    }
+
+    .measure-sample {
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      text-wrap: pretty;
+    }
+
+    .measure-limited {
+      width: 100%;
+      max-width: 34em;
+      padding-right: var(--space-4);
+      border-right: 1px solid var(--rule);
+    }
+
+    .measure-full {
+      width: 100%;
+    }
+
+    .demo-pair {
+      margin-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+      column-gap: 0;
+    }
+
+    .demo-cell {
+      grid-column: span 6;
+      padding: var(--space-4) var(--space-4) 0 0;
+    }
+
+    .demo-cell + .demo-cell {
+      padding-right: 0;
+      padding-left: var(--space-4);
+      border-left: 1px solid var(--rule);
+    }
+
+    .demo-label {
+      margin-bottom: var(--space-3);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .autospace-text {
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      text-wrap: pretty;
+    }
+
+    .autospace-live {
+      text-autospace: normal;
+    }
+
+    /* 同一段文字在关闭态的静态参照，保证对比始终可见。 */
+    .autospace-off {
+      text-autospace: no-autospace;
+    }
+
+    #autospace-demo[data-autospace="on"] .autospace-live {
+      text-autospace: normal;
+    }
+
+    #autospace-demo[data-autospace="off"] .autospace-live {
+      text-autospace: no-autospace;
+    }
+
+    .trim-stage {
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+    }
+
+    .trim-axis-label {
+      margin-bottom: var(--space-2);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .trim-sample {
+      max-width: 34em;
+      padding-left: 0;
+      border-left: 1px solid var(--ink);
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      text-spacing-trim: trim-start;
+    }
+
+    #trim-demo[data-trim="on"] .trim-sample {
+      text-spacing-trim: trim-start;
+    }
+
+    #trim-demo[data-trim="off"] .trim-sample {
+      text-spacing-trim: space-all;
+    }
+
+    .toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) 0;
+      border: 0;
+      border-bottom: 1px solid var(--rule);
+      background: transparent;
+      color: var(--ink);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+    }
+
+    .toggle:hover {
+      border-bottom-color: var(--ink);
+    }
+
+    .toggle-indicator {
+      flex: 0 0 auto;
+      width: var(--space-2);
+      height: var(--space-2);
+      border: 1px solid currentColor;
+      background: transparent;
+    }
+
+    .toggle[aria-pressed="true"] .toggle-indicator {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .toggle-state {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .toggle[aria-pressed="true"] .toggle-state {
+      color: var(--accent);
+    }
+
+    .control-caption {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .control-stack {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2) var(--space-3);
+    }
+
+    /* ------------------------------------------------------------------
+       04 · Components
+       ------------------------------------------------------------------ */
+    .ui-figure {
+      margin-top: var(--space-6);
+    }
+
+    .ui-slice {
+      padding: var(--space-5);
+      border: 1px solid var(--rule);
+    }
+
+    .ui-topline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-2) var(--space-4);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .breadcrumb ol {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-1);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    .breadcrumb li + li::before {
+      content: "/";
+      margin-right: var(--space-1);
+      color: var(--rule);
+    }
+
+    .breadcrumb [aria-current="page"] {
+      color: var(--ink);
+      font-weight: var(--weight-medium);
+    }
+
+    .ui-date {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .ui-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .ui-page-title {
+      font-size: var(--text-page-size);
+      line-height: var(--text-page-leading);
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0;
+    }
+
+    .ui-lede {
+      max-width: 32em;
+      margin-top: var(--space-2);
+      color: var(--muted);
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+    }
+
+    .ui-summary {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .ui-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 var(--space-5);
+      margin-top: var(--space-5);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .ui-tabs a {
+      display: inline-flex;
+      align-items: baseline;
+      gap: var(--space-1);
+      margin-bottom: -1px;
+      padding-bottom: var(--space-2);
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .ui-tabs a:hover {
+      color: var(--ink);
+    }
+
+    .ui-tabs a[aria-current="page"] {
+      color: var(--ink);
+      border-bottom-color: var(--accent);
+    }
+
+    .ui-tabs .tab-count {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .project-table-wrap {
+      margin-top: var(--space-3);
+    }
+
+    .project-table {
+      min-width: 44rem;
+      table-layout: fixed;
+    }
+
+    .project-table .col-project {
+      width: 38%;
+    }
+
+    .project-table .col-status {
+      width: 14%;
+    }
+
+    .project-table .col-owner {
+      width: 16%;
+    }
+
+    .project-table .col-date {
+      width: 18%;
+    }
+
+    .project-table .col-files {
+      width: 14%;
+    }
+
+    .project-table thead th {
+      padding: var(--space-3);
+      border-bottom: 1px solid var(--ink);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      text-align: left;
+    }
+
+    .project-table tbody th,
+    .project-table tbody td {
+      padding: var(--space-3);
+      border-bottom: 1px solid var(--rule);
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      font-weight: var(--weight-regular);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .project-table tbody th {
+      font-weight: var(--weight-regular);
+    }
+
+    .project-table thead th:first-child,
+    .project-table tbody th:first-child {
+      padding-left: 0;
+    }
+
+    .project-table thead th:last-child,
+    .project-table tbody td:last-child {
+      padding-right: 0;
+    }
+
+    .project-table .is-num {
+      text-align: right;
+      font-variant-numeric: tabular-nums lining-nums;
+      white-space: nowrap;
+    }
+
+    .project-name {
+      overflow: hidden;
+    }
+
+    .truncate {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status {
+      display: inline-block;
+      padding: var(--space-1) var(--space-2);
+      border: 1px solid currentColor;
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-medium);
+      white-space: nowrap;
+    }
+
+    .status-live {
+      color: var(--accent);
+    }
+
+    .status-review {
+      color: var(--ink);
+    }
+
+    .status-done,
+    .status-archived {
+      color: var(--muted);
+    }
+
+    .ui-table-note {
+      margin-top: var(--space-2);
+      color: var(--muted);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .ui-lower {
+      margin-top: var(--space-6);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--rule);
+      column-gap: var(--space-6);
+    }
+
+    .ui-form {
+      grid-column: 1 / span 7;
+    }
+
+    .ui-section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+
+    .ui-form-title {
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0;
+    }
+
+    .ui-form-note {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+    }
+
+    .field label {
+      display: block;
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+    }
+
+    .field input {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      margin-top: var(--space-2);
+      padding: var(--space-2) 0;
+      border: 0;
+      border-bottom: 1px solid var(--rule);
+      background: transparent;
+      color: var(--ink);
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+    }
+
+    .field input::placeholder {
+      color: var(--muted);
+      opacity: 1;
+    }
+
+    .field input:hover {
+      border-bottom-color: var(--muted);
+    }
+
+    .field-help {
+      margin-top: var(--space-1);
+      color: var(--muted);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid transparent;
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+      letter-spacing: 0;
+      text-decoration: none;
+    }
+
+    .button-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--paper);
+    }
+
+    .button-primary:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .button-secondary {
+      background: transparent;
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .button-secondary:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .empty-state {
+      grid-column: 9 / span 4;
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+    }
+
+    .empty-kicker {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      letter-spacing: 0.06em;
+    }
+
+    .empty-title {
+      margin-top: var(--space-2);
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-semibold);
+    }
+
+    .empty-copy {
+      max-width: 24em;
+      margin-top: var(--space-2);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    .ui-figure-caption {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+      color: var(--muted);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    /* ------------------------------------------------------------------
+       05 · Measures
+       ------------------------------------------------------------------ */
+    .metrics-layout {
+      margin-top: var(--space-6);
+      column-gap: var(--space-6);
+    }
+
+    .spacing-block {
+      grid-column: 1 / span 5;
+    }
+
+    .type-block {
+      grid-column: 7 / span 6;
+      padding-left: var(--space-6);
+      border-left: 1px solid var(--rule);
+    }
+
+    .metric-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .metric-title {
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-semibold);
+    }
+
+    .metric-unit {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .space-list {
+      display: grid;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+    }
+
+    .space-row {
+      display: grid;
+      grid-template-columns: 4.5rem minmax(0, 1fr) 2.25rem;
+      align-items: center;
+      gap: var(--space-2);
+      min-height: var(--space-4);
+    }
+
+    .space-token,
+    .space-value {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .space-value {
+      text-align: right;
+    }
+
+    .space-bar {
+      display: block;
+      height: var(--space-2);
+      background: var(--accent);
+    }
+
+    .metric-footnote {
+      margin-top: var(--space-3);
+      color: var(--muted);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .font-ruler {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      margin-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .ruler-step {
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      align-items: flex-start;
+      min-width: 0;
+      min-height: 7rem;
+      padding: var(--space-3) 0 var(--space-3) var(--space-2);
+      border-left: 1px solid var(--rule);
+    }
+
+    .ruler-step:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .ruler-glyph {
+      display: block;
+      color: var(--ink);
+      font-weight: var(--weight-regular);
+    }
+
+    .glyph-caption {
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .glyph-label {
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    .glyph-body {
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+    }
+
+    .glyph-section {
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+    }
+
+    .glyph-page {
+      font-size: var(--text-page-size);
+      line-height: var(--text-page-leading);
+    }
+
+    .glyph-display {
+      font-size: var(--text-display-size);
+      line-height: var(--text-display-leading);
+    }
+
+    .ruler-value {
+      display: block;
+      margin-top: var(--space-2);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ruler-token {
+      display: block;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    .axiom {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      margin-top: var(--space-8);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-medium);
+    }
+
+    .axiom::before {
+      content: "";
+      flex: 0 0 auto;
+      width: var(--space-2);
+      height: var(--space-2);
+      margin-top: calc((var(--text-section-leading) - var(--space-2)) / 2);
+      background: var(--accent);
+    }
+
+    /* ------------------------------------------------------------------
+       06 · Antipatterns
+       ------------------------------------------------------------------ */
+    .anti-note {
+      max-width: 44em;
+      margin-top: var(--space-4);
+      color: var(--muted);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    .anti-item {
+      margin-top: var(--space-7);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--ink);
+    }
+
+    .anti-item:first-of-type {
+      margin-top: var(--space-6);
+    }
+
+    .anti-item-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-3);
+    }
+
+    .anti-index {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .anti-title {
+      font-size: var(--text-section-size);
+      line-height: var(--text-section-leading);
+      font-weight: var(--weight-semibold);
+    }
+
+    .anti-grid {
+      margin-top: var(--space-4);
+      border-top: 1px solid var(--rule);
+      column-gap: 0;
+    }
+
+    .anti-cell {
+      grid-column: span 6;
+      padding: var(--space-4) var(--space-4) 0 0;
+    }
+
+    .anti-cell + .anti-cell {
+      padding-right: 0;
+      padding-left: var(--space-4);
+      border-left: 1px solid var(--rule);
+    }
+
+    .anti-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .anti-label::before {
+      content: "";
+      width: var(--space-2);
+      height: var(--space-2);
+      border: 1px solid currentColor;
+      background: transparent;
+    }
+
+    .anti-cell.bad .anti-label {
+      color: var(--accent);
+    }
+
+    .anti-cell.bad .anti-label::before {
+      background: currentColor;
+      border-color: currentColor;
+    }
+
+    .anti-cell.good .anti-label {
+      color: var(--ink);
+    }
+
+    .anti-demo {
+      min-height: 8rem;
+    }
+
+    .anti-code {
+      max-width: 100%;
+      margin-top: var(--space-4);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      overflow-wrap: anywhere;
+    }
+
+    .demo-13-13 {
+      font-size: 13px;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-wrap: pretty;
+    }
+
+    .demo-body-good {
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      letter-spacing: 0;
+      text-wrap: pretty;
+    }
+
+    .demo-tracking-bad {
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      letter-spacing: 0.12em;
+    }
+
+    .demo-tracking-good {
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      letter-spacing: 0;
+    }
+
+    .break-box {
+      width: 100%;
+      max-width: 17em;
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+    }
+
+    .demo-break-bad {
+      word-break: break-all;
+    }
+
+    .demo-break-good {
+      overflow-wrap: break-word;
+      line-break: strict;
+      word-break: normal;
+    }
+
+    .mini-page {
+      width: 100%;
+      max-width: 20em;
+    }
+
+    .mini-page p {
+      margin: 0;
+    }
+
+    /* 以下像素值与字重只用于展示“噪声”，不得提取为 token。 */
+    .noise-title {
+      margin-bottom: 6px;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .noise-meta {
+      margin-bottom: 10px;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+    }
+
+    .noise-copy {
+      margin-bottom: 8px;
+      font-size: 18px;
+      line-height: 1.25;
+      font-weight: 400;
+    }
+
+    .noise-label {
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .noise-value {
+      margin-top: 2px;
+      font-size: 14px;
+      line-height: 1.1;
+      font-weight: 400;
+    }
+
+    .noise-action {
+      margin-top: 12px;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .calm-title {
+      margin-bottom: var(--space-2);
+      font-size: var(--text-page-size);
+      line-height: var(--text-page-leading);
+      font-weight: var(--weight-semibold);
+    }
+
+    .calm-meta {
+      margin-bottom: var(--space-4);
+      color: var(--muted);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .calm-copy {
+      margin-bottom: var(--space-3);
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    .calm-label {
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+      font-weight: var(--weight-semibold);
+    }
+
+    .calm-value {
+      font-size: var(--text-body-size);
+      line-height: var(--text-body-leading);
+      font-weight: var(--weight-regular);
+    }
+
+    /* ------------------------------------------------------------------
+       Footer
+       ------------------------------------------------------------------ */
+    .site-footer {
+      margin-top: var(--space-8);
+      padding-top: var(--space-5);
+      padding-bottom: var(--space-7);
+      border-top: 1px solid var(--ink);
+    }
+
+    .footer-main {
+      column-gap: var(--space-6);
+    }
+
+    .footer-sources-block {
+      grid-column: 1 / span 7;
+    }
+
+    .footer-label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      font-weight: var(--weight-semibold);
+      line-height: var(--text-caption-leading);
+      letter-spacing: 0.06em;
+    }
+
+    .sources {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 38em;
+      margin-top: var(--space-2);
+      color: var(--ink);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+    }
+
+    .sources li {
+      display: inline-flex;
+      align-items: baseline;
+      white-space: nowrap;
+    }
+
+    .sources a {
+      text-decoration-color: var(--muted);
+    }
+
+    .sources a:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+
+    .sources li:not(:last-child)::after {
+      content: "、";
+      color: var(--muted);
+    }
+
+    .footer-disclaimer {
+      grid-column: 9 / span 4;
+      align-self: start;
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--rule);
+      color: var(--ink);
+      font-size: var(--text-label-size);
+      line-height: var(--text-label-leading);
+      font-weight: var(--weight-medium);
+    }
+
+    .footer-base {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--space-2) var(--space-4);
+      margin-top: var(--space-6);
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption-size);
+      line-height: var(--text-caption-leading);
+    }
+
+    /* ------------------------------------------------------------------
+       Responsive
+       ------------------------------------------------------------------ */
+    @media (max-width: 760px) {
+      :root {
+        --gutter: var(--space-5);
+      }
+
+      .grid12 {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+      }
+
+      .cover {
+        padding-top: var(--space-5);
+        padding-bottom: var(--space-6);
+      }
+
+      .cover-top {
+        align-items: flex-start;
+      }
+
+      .cover-mark {
+        text-align: right;
+      }
+
+      .cover-hero {
+        padding-top: var(--space-7);
+      }
+
+      .cover-copy,
+      .cover-mode,
+      .cover-intro,
+      .cover-meta,
+      .premise-item,
+      .spacing-block,
+      .type-block,
+      .ui-form,
+      .empty-state,
+      .footer-sources-block,
+      .footer-disclaimer {
+        grid-column: 1 / -1;
+      }
+
+      .cover-mode {
+        max-width: 28em;
+        margin-top: var(--space-5);
+      }
+
+      .cover-title-break {
+        display: block;
+      }
+
+      .cover-foot {
+        margin-top: var(--space-6);
+      }
+
+      .cover-meta {
+        justify-content: start;
+        gap: var(--space-4);
+      }
+
+      .chapter {
+        margin-top: var(--space-6);
+      }
+
+      .chapter-title {
+        margin-top: var(--space-3);
+      }
+
+      .premise {
+        margin-top: var(--space-6);
+      }
+
+      .premise-item {
+        padding: var(--space-4) 0;
+      }
+
+      .premise-item + .premise-item {
+        padding-left: 0;
+        border-top: 1px solid var(--rule);
+        border-left: 0;
+      }
+
+      .premise-copy {
+        max-width: 34em;
+      }
+
+      .scale-toolbar {
+        align-items: flex-start;
+      }
+
+      .scale-legend {
+        display: none;
+      }
+
+      .specimen {
+        grid-template-columns: 1fr;
+        row-gap: var(--space-4);
+        padding-block: var(--space-4);
+      }
+
+      .specimen-en {
+        padding-top: var(--space-3);
+        padding-left: 0;
+        border-top: 1px solid var(--rule);
+        border-left: 0;
+      }
+
+      .compare-two,
+      .demo-pair,
+      .anti-grid {
+        display: block;
+      }
+
+      .compare-col,
+      .demo-cell,
+      .anti-cell {
+        display: block;
+        padding-right: 0;
+      }
+
+      .compare-col + .compare-col,
+      .demo-cell + .demo-cell,
+      .anti-cell + .anti-cell {
+        margin-top: var(--space-4);
+        padding-top: var(--space-4);
+        padding-left: 0;
+        border-top: 1px solid var(--rule);
+        border-left: 0;
+      }
+
+      .compare-two,
+      .demo-pair,
+      .anti-grid {
+        border-top: 1px solid var(--ink);
+      }
+
+      .compare-col,
+      .demo-cell,
+      .anti-cell {
+        padding-top: var(--space-3);
+      }
+
+      .measure-limited {
+        max-width: 100%;
+        border-right: 0;
+      }
+
+      .ui-slice {
+        padding: var(--space-4);
+      }
+
+      .ui-title-row {
+        align-items: flex-start;
+      }
+
+      .ui-summary {
+        text-align: left;
+      }
+
+      .ui-tabs {
+        gap: 0 var(--space-4);
+      }
+
+      .ui-form {
+        padding-bottom: var(--space-5);
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .empty-state {
+        padding-top: var(--space-4);
+      }
+
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics-layout {
+        display: block;
+      }
+
+      .type-block {
+        margin-top: var(--space-7);
+        padding-top: var(--space-4);
+        padding-left: 0;
+        border-top: 1px solid var(--ink);
+        border-left: 0;
+      }
+
+      .font-ruler {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+
+      .ruler-step {
+        min-height: 6rem;
+        padding-left: var(--space-1);
+      }
+
+      .ruler-step:first-child {
+        padding-left: 0;
+      }
+
+      .ruler-token {
+        display: none;
+      }
+
+      .ruler-glyph {
+        max-width: 100%;
+      }
+
+      .axiom {
+        margin-top: var(--space-7);
+      }
+
+      .anti-item {
+        margin-top: var(--space-6);
+      }
+
+      .anti-demo {
+        min-height: 0;
+      }
+
+      .footer-disclaimer {
+        margin-top: var(--space-4);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .cover-top {
+        display: block;
+      }
+
+      .cover-mark {
+        margin-top: var(--space-2);
+        text-align: left;
+      }
+
+      .cover-meta {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        width: 100%;
+      }
+
+      .segmented {
+        width: 100%;
+      }
+
+      .segmented button {
+        flex: 1;
+      }
+
+      .space-row {
+        grid-template-columns: 4rem minmax(0, 1fr) 2rem;
+      }
+
+      .form-actions {
+        align-items: stretch;
+      }
+
+      .button {
+        flex: 1;
+      }
+
+      .anti-item-head {
+        row-gap: var(--space-1);
+      }
+    }
+
+    /* ------------------------------------------------------------------
+       Print
+       交互控件不进入打印稿；内容样本保留当前状态。
+       ------------------------------------------------------------------ */
+    @media print {
+      .skip-link,
+      .spec-controls,
+      .segmented,
+      .toggle {
+        display: none !important;
+      }
+
+      body {
+        background: #FFFFFF;
+        color: #000000;
+      }
+
+      .shell {
+        width: 100%;
+        max-width: none;
+      }
+
+      .ui-slice {
+        break-inside: avoid;
+      }
+
+      .anti-item,
+      .chapter {
+        break-inside: avoid;
+      }
+
+      a {
+        text-decoration: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <div class="shell">
+    <header class="cover" aria-labelledby="page-title">
+      <div class="cover-top">
+        <p class="eyebrow">TYPOGRAPHY SYSTEM / v0.1</p>
+        <p class="cover-mark">视觉规格 / VISUAL SPECIMEN</p>
+      </div>
+
+      <div class="cover-hero grid12">
+        <div class="cover-copy">
+          <h1 class="cover-title" id="page-title">中英双语<span class="cover-title-break">文排系统</span></h1>
+          <p class="cover-subtitle">五个常驻角色，一套阶梯，两种文字</p>
+        </div>
+        <aside class="cover-mode" aria-labelledby="mode-title">
+          <p class="cover-mode-title" id="mode-title">Expressive 模式</p>
+          <p class="cover-mode-copy">封面主标题使用宋体衬线，只为确立样本册语气。产品 UI 不应模仿；界面标题回到无衬线角色。</p>
+        </aside>
+      </div>
+
+      <div class="cover-foot grid12">
+        <p class="cover-intro">问题不在审美，而在缺少可执行的约束：字号各有出处，行高却凭手感，中英混排无人负责。本页把决定文字呼吸的变量摊开，写成可以照着执行的规格。</p>
+        <dl class="cover-meta">
+          <div>
+            <dt>日期</dt>
+            <dd><time datetime="2026-11-20">2026-11-20</time></dd>
+          </div>
+          <div>
+            <dt>根字号</dt>
+            <dd>16px</dd>
+          </div>
+          <div>
+            <dt>语言</dt>
+            <dd>zh-CN</dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="chapter" id="premise" aria-labelledby="premise-title">
+        <header>
+          <p class="chapter-index">00 / 命题</p>
+          <div class="chapter-rule" aria-hidden="true"></div>
+          <h2 class="chapter-title" id="premise-title"><span class="no-break">为什么字号都对了，</span><span class="no-break">页面还是乱？</span></h2>
+          <p class="chapter-lede">字号只是输入。决定页面是否可读的，是角色、节奏与行宽。</p>
+        </header>
+
+        <div class="premise grid12">
+          <article class="premise-item">
+            <p class="premise-kicker">HIERARCHY</p>
+            <h3 class="premise-title">层级</h3>
+            <p class="premise-copy">所有东西一样响，读者找不到入口。</p>
+          </article>
+          <article class="premise-item">
+            <p class="premise-kicker">RHYTHM</p>
+            <h3 class="premise-title">节奏</h3>
+            <p class="premise-copy">行高与间距凭手感，段落之间没有尺度。</p>
+          </article>
+          <article class="premise-item">
+            <p class="premise-kicker">SCRIPT SYSTEM</p>
+            <h3 class="premise-title">文字系统</h3>
+            <p class="premise-copy">中英混排未处理，两种字形互相拖累。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="chapter" id="roles" aria-labelledby="roles-title">
+        <header>
+          <p class="chapter-index">01 / 角色</p>
+          <div class="chapter-rule" aria-hidden="true"></div>
+          <h2 class="chapter-title" id="roles-title">角色</h2>
+          <p class="chapter-lede">先给每段文字分配角色，再讨论字号。<code>display</code> 可选，其余五个角色常驻产品界面。</p>
+        </header>
+
+        <p class="scroll-hint" aria-hidden="true">表格较宽，可横向滚动 →</p>
+        <div class="table-scroll role-table-wrap" tabindex="0" role="region" aria-label="角色规格表，可横向滚动">
+          <table class="role-table">
+            <caption class="sr-only">六个排版角色、用途、中英文行高与字重</caption>
+            <colgroup>
+              <col class="col-role">
+              <col class="col-purpose">
+              <col class="col-zh">
+              <col class="col-en">
+              <col class="col-weight">
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">角色</th>
+                <th scope="col">用途</th>
+                <th scope="col" class="is-num">中文行高</th>
+                <th scope="col" class="is-num">英文行高</th>
+                <th scope="col" class="is-num">字重</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <span class="role-token-row"><span class="role-token">display</span><span class="role-optional">可选</span></span>
+                  <span class="role-meta">3rem / 48px</span>
+                </th>
+                <td class="role-purpose">封面与营销首屏的单一陈述；产品界面禁用。</td>
+                <td class="role-number is-num">1.1667</td>
+                <td class="role-number is-num">1.0833</td>
+                <td class="role-number is-num">600</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <span class="role-token-row"><span class="role-token">page</span></span>
+                  <span class="role-meta">1.75rem / 28px</span>
+                </th>
+                <td class="role-purpose">页面主标题；每个视图最多一次。</td>
+                <td class="role-number is-num">2.5rem</td>
+                <td class="role-number is-num">2.25rem</td>
+                <td class="role-number is-num">600</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <span class="role-token-row"><span class="role-token">section</span></span>
+                  <span class="role-meta">1.25rem / 20px</span>
+                </th>
+                <td class="role-purpose">模块标题；支持扫描，不跳级使用。</td>
+                <td class="role-number is-num">1.875rem</td>
+                <td class="role-number is-num">1.75rem</td>
+                <td class="role-number is-num">600</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <span class="role-token-row"><span class="role-token">body</span></span>
+                  <span class="role-meta">1rem / 16px</span>
+                </th>
+                <td class="role-purpose">正文与说明；长文不小于 16px。</td>
+                <td class="role-number is-num">1.75</td>
+                <td class="role-number is-num">1.5</td>
+                <td class="role-number is-num">400</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <span class="role-token-row"><span class="role-token">label</span></span>
+                  <span class="role-meta">0.875rem / 14px</span>
+                </th>
+                <td class="role-purpose">按钮、字段、导航与表格；密集界面的主字号。</td>
+                <td class="role-number is-num">1.5714</td>
+                <td class="role-number is-num">1.4286</td>
+                <td class="role-number is-num">500</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <span class="role-token-row"><span class="role-token">caption</span></span>
+                  <span class="role-meta">0.75rem / 12px</span>
+                </th>
+                <td class="role-purpose">时间、单位、帮助文字与脚注；不承载正文。</td>
+                <td class="role-number is-num">1.5</td>
+                <td class="role-number is-num">1.3333</td>
+                <td class="role-number is-num">400</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-footnote"><code>display</code> 可选，仅用于 Expressive 场景；其余五个角色常驻产品界面。字重只有 400、500、600 三档，中文行高始终不低于英文。</p>
+      </section>
+
+      <section class="chapter" id="scale" aria-labelledby="scale-title">
+        <header>
+          <p class="chapter-index">02 / 阶梯</p>
+          <div class="chapter-rule" aria-hidden="true"></div>
+          <h2 class="chapter-title" id="scale-title">阶梯</h2>
+          <p class="chapter-lede">六个角色，按真实字号排列。密度切换只改变下方样本的字号与行高，不改变角色、字重或颜色。</p>
+        </header>
+
+        <div class="scale-toolbar">
+          <p class="scale-intro">每个角色使用与用途相符的短样本。左为中文，右为英文。</p>
+          <div class="segmented spec-controls" role="group" aria-label="阶梯显示密度">
+            <span class="segmented-label" aria-hidden="true">密度</span>
+            <button type="button" data-set-density="standard" aria-pressed="true" aria-controls="type-scale">标准</button>
+            <button type="button" data-set-density="reading" aria-pressed="false" aria-controls="type-scale">阅读</button>
+            <button type="button" data-set-density="compact" aria-pressed="false" aria-controls="type-scale">紧凑</button>
+          </div>
+        </div>
+
+        <div class="scale-stage" id="type-scale" data-density="standard">
+          <div class="scale-legend" aria-hidden="true">
+            <span>Token</span>
+            <span>中文样本</span>
+            <span lang="en">English sample</span>
+          </div>
+
+          <article class="specimen role-display" aria-label="display 角色样本">
+            <div class="specimen-token"><code>text.display</code><span>可选角色</span></div>
+            <p class="specimen-cn" lang="zh-CN">项目管理</p>
+            <p class="specimen-en" lang="en">Project management</p>
+          </article>
+
+          <article class="specimen role-page" aria-label="page 角色样本">
+            <div class="specimen-token"><code>text.page</code><span>页面标题</span></div>
+            <p class="specimen-cn" lang="zh-CN">项目管理</p>
+            <p class="specimen-en" lang="en">Project management</p>
+          </article>
+
+          <article class="specimen role-section" aria-label="section 角色样本">
+            <div class="specimen-token"><code>text.section</code><span>区块标题</span></div>
+            <p class="specimen-cn" lang="zh-CN">最近任务</p>
+            <p class="specimen-en" lang="en">Recent tasks</p>
+          </article>
+
+          <article class="specimen role-body" aria-label="body 角色样本">
+            <div class="specimen-token"><code>text.body</code><span>正文</span></div>
+            <p class="specimen-cn" lang="zh-CN">在这里查看项目进度、编辑内容并管理任务。</p>
+            <p class="specimen-en" lang="en">Review progress, edit content, and manage tasks here.</p>
+          </article>
+
+          <article class="specimen role-label" aria-label="label 角色样本">
+            <div class="specimen-token"><code>text.label</code><span>控件文字</span></div>
+            <p class="specimen-cn" lang="zh-CN">任务名称　执行状态　最后修改时间</p>
+            <p class="specimen-en" lang="en">Task name / Status / Last modified</p>
+          </article>
+
+          <article class="specimen role-caption" aria-label="caption 角色样本">
+            <div class="specimen-token"><code>text.caption</code><span>辅助信息</span></div>
+            <p class="specimen-cn" lang="zh-CN">最后更新：2026-11-20 14:30</p>
+            <p class="specimen-en" lang="en">Last updated: 2026-11-20 14:30</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="chapter" id="bilingual" aria-labelledby="bilingual-title">
+        <header>
+          <p class="chapter-index">03 / 两种文字</p>
+          <div class="chapter-rule" aria-hidden="true"></div>
+          <h2 class="chapter-title" id="bilingual-title">两种文字</h2>
+          <p class="chapter-lede">中文与英文不是同一套行高、行宽与断行策略的两次复制。中文定基准，英文跟随。</p>
+        </header>
+
+        <div class="submodule" aria-labelledby="leading-title">
+          <header class="submodule-head">
+            <div class="submodule-heading">
+              <h3 class="submodule-title" id="leading-title">行高对照</h3>
+              <p class="submodule-kicker">LEADING</p>
+            </div>
+            <p class="submodule-note">同一段混排文字，仅改变行高。</p>
+          </header>
+
+          <div class="compare-two grid12">
+            <article class="compare-col">
+              <p class="compare-head"><span>中文优先</span><strong>line-height: 1.75</strong></p>
+              <p class="mixed-sample leading-tall">把中文与 English 放在同一行，阅读的节奏不该被切换打断。行高先暴露问题：紧则挤，松则散。A paragraph is not a box of text; it is a measure of time.</p>
+            </article>
+            <article class="compare-col">
+              <p class="compare-head"><span>英文优先</span><strong>line-height: 1.5</strong></p>
+              <p class="mixed-sample leading-short">把中文与 English 放在同一行，阅读的节奏不该被切换打断。行高先暴露问题：紧则挤，松则散。A paragraph is not a box of text; it is a measure of time.</p>
+            </article>
+          </div>
+          <p class="note-line">中文取<code>1.75</code>，英文取<code>1.5</code>；同一段落以中文为准。行高不是“越大越好”，而是——“两种文字各取所需”。</p>
+        </div>
+
+        <div class="submodule" aria-labelledby="measure-title">
+          <header class="submodule-head">
+            <div class="submodule-heading">
+              <h3 class="submodule-title" id="measure-title">行宽对照</h3>
+              <p class="submodule-kicker">MEASURE</p>
+            </div>
+            <p class="submodule-note">同一段文字，两套行宽。</p>
+          </header>
+
+          <div class="measure-list">
+            <div class="measure-item">
+              <div class="measure-meta"><code>max-width: 34em</code><span>理想行宽</span></div>
+              <p class="measure-sample measure-limited">一行文字的可读性，取决于眼睛愿不愿意回头。A comfortable measure lets the reader return to the next line without losing the thread.</p>
+            </div>
+            <div class="measure-item">
+              <div class="measure-meta"><code>width: 100%</code><span>容器全宽</span></div>
+              <p class="measure-sample measure-full">一行文字的可读性，取决于眼睛愿不愿意回头。A comfortable measure lets the reader return to the next line without losing the thread.</p>
+            </div>
+          </div>
+          <p class="note-line">34em ≈ 34 个汉字 ≈ 68 个拉丁字符。两者内容相同，阅读负担不同。</p>
+        </div>
+
+        <div class="submodule" aria-labelledby="autospace-title">
+          <header class="submodule-head">
+            <div class="submodule-heading">
+              <h3 class="submodule-title" id="autospace-title">混排间距</h3>
+              <p class="submodule-kicker">AUTOSPACE</p>
+            </div>
+            <div class="control-stack">
+              <button class="toggle spec-controls" id="autospace-toggle" type="button" aria-pressed="true" aria-controls="autospace-live">
+                <span class="toggle-indicator" aria-hidden="true"></span>
+                <span>自动间距</span>
+                <span class="toggle-state" data-state aria-live="polite">开</span>
+              </button>
+              <span class="control-caption">默认开</span>
+            </div>
+          </header>
+
+          <div class="demo-pair grid12" id="autospace-demo" data-autospace="on">
+            <div class="demo-cell">
+              <p class="demo-label">当前演示</p>
+              <p class="autospace-text autospace-live" id="autospace-live">在 Figma 中检查 12 个组件的 8px 间距，别让 Auto Layout 替你思考。</p>
+            </div>
+            <div class="demo-cell">
+              <p class="demo-label">关闭态 / 参照</p>
+              <p class="autospace-text autospace-off">在 Figma 中检查 12 个组件的 8px 间距，别让 Auto Layout 替你思考。</p>
+            </div>
+          </div>
+          <p class="note-line">这是 CSS 标准方案 <code>text-autospace: normal</code>；不要手打空格。浏览器不支持时会安静地退回普通字距。</p>
+        </div>
+
+        <div class="submodule" aria-labelledby="trim-title">
+          <header class="submodule-head">
+            <div class="submodule-heading">
+              <h3 class="submodule-title" id="trim-title">标点挤压</h3>
+              <p class="submodule-kicker">PUNCTUATION TRIM</p>
+            </div>
+            <div class="control-stack">
+              <button class="toggle spec-controls" id="trim-toggle" type="button" aria-pressed="true" aria-controls="trim-live">
+                <span class="toggle-indicator" aria-hidden="true"></span>
+                <span>行首标点挤压</span>
+                <span class="toggle-state" data-state aria-live="polite">开</span>
+              </button>
+              <span class="control-caption">默认开</span>
+            </div>
+          </header>
+
+          <div class="trim-stage" id="trim-demo" data-trim="on">
+            <p class="trim-axis-label">行首参考线 / 全角标点</p>
+            <p class="trim-sample" id="trim-live">（测试）。连续标点！？与省略号……会随<code>trim-start</code>一并收紧。</p>
+          </div>
+          <p class="note-line">这是渐进增强，Safari 与 Firefox 可能不生效；不得依赖它完成对齐。关闭时保留完整全角字身，开启时行首括号向版心靠拢。</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="components" aria-labelledby="components-title">
+        <header>
+          <p class="chapter-index">04 / 组件</p>
+          <div class="chapter-rule" aria-hidden="true"></div>
+          <h2 class="chapter-title" id="components-title">组件</h2>
+          <p class="chapter-lede">把规则放进一个真实界面切片，让每个元素只使用 01 定义的角色。</p>
+        </header>
+
+        <figure class="ui-figure">
+          <div class="ui-slice" role="group" aria-label="项目总览产品界面切片">
+            <div class="ui-topline">
+              <nav class="breadcrumb" aria-label="面包屑">
+                <ol>
+                  <li>工作台</li>
+                  <li aria-current="page">项目</li>
+                </ol>
+              </nav>
+              <p class="ui-date">最后同步 09:42</p>
+            </div>
+
+            <div class="ui-title-row">
+              <div>
+                <h3 class="ui-page-title">项目总览</h3>
+                <p class="ui-lede">跨团队内容项目的当前状态与交付节奏。</p>
+              </div>
+              <p class="ui-summary">共 12 个项目 / 进行中 4</p>
+            </div>
+
+            <nav class="ui-tabs" aria-label="项目视图">
+              <a href="#ui-table" aria-current="page">全部 <span class="tab-count">12</span></a>
+              <a href="#ui-table">进行中 <span class="tab-count">4</span></a>
+              <a href="#ui-table">待审核 <span class="tab-count">3</span></a>
+              <a href="#ui-table">已归档 <span class="tab-count">5</span></a>
+            </nav>
+
+            <p class="scroll-hint" aria-hidden="true">表格较宽，可横向滚动 →</p>
+            <div class="table-scroll project-table-wrap" tabindex="0" role="region" aria-label="项目数据表，可横向滚动">
+              <table class="project-table" id="ui-table">
+                <caption class="sr-only">项目名称、状态、负责人、截止日期与文件数</caption>
+                <colgroup>
+                  <col class="col-project">
+                  <col class="col-status">
+                  <col class="col-owner">
+                  <col class="col-date">
+                  <col class="col-files">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th scope="col">项目</th>
+                    <th scope="col">状态</th>
+                    <th scope="col">负责人</th>
+                    <th scope="col" class="is-num">截止日期</th>
+                    <th scope="col" class="is-num">文件数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="project-name" title="全球品牌内容资产管理与本地化审校平台（东亚区）第二阶段迁移与验收">
+                      <span class="truncate">全球品牌内容资产管理与本地化审校平台（东亚区）第二阶段迁移与验收</span>
+                    </th>
+                    <td><span class="status status-live">进行中</span></td>
+                    <td>周予安</td>
+                    <td class="is-num">2026-12-04</td>
+                    <td class="is-num">128</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="project-name">移动端新手引导重设计</th>
+                    <td><span class="status status-review">待审核</span></td>
+                    <td>林清</td>
+                    <td class="is-num">2026-11-28</td>
+                    <td class="is-num">42</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="project-name">定价页实验与指标复核</th>
+                    <td><span class="status status-done">已完成</span></td>
+                    <td>陈闻</td>
+                    <td class="is-num">2026-11-12</td>
+                    <td class="is-num">96</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="project-name">客户访谈归档（第三季度）</th>
+                    <td><span class="status status-archived">已归档</span></td>
+                    <td>苏禾</td>
+                    <td class="is-num">2026-10-30</td>
+                    <td class="is-num">31</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="ui-table-note">长名称单行截断，完整名称保留在 title 中；数字列右对齐并使用 tabular-nums。</p>
+
+            <div class="ui-lower grid12">
+              <form class="ui-form" action="#ui-table" aria-labelledby="new-project-title">
+                <div class="ui-section-head">
+                  <h4 class="ui-form-title" id="new-project-title">新建项目</h4>
+                  <p class="ui-form-note">静态样式样本 / 不提交数据</p>
+                </div>
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="project-name">项目名称</label>
+                    <input id="project-name" name="project-name" type="text" placeholder="例如：品牌内容中台迁移" aria-describedby="project-name-help" autocomplete="off">
+                    <p class="field-help" id="project-name-help">建议 12–24 个字，用于列表与检索。</p>
+                  </div>
+                  <div class="field">
+                    <label for="project-owner">负责人</label>
+                    <input id="project-owner" name="project-owner" type="text" placeholder="姓名或团队" autocomplete="off">
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="button button-primary" type="button">创建项目</button>
+                  <button class="button button-secondary" type="button">保存草稿</button>
+                </div>
+              </form>
+
+              <aside class="empty-state" aria-labelledby="empty-title">
+                <p class="empty-kicker">ARCHIVE / 00</p>
+                <h4 class="empty-title" id="empty-title">还没有归档项目</h4>
+                <p class="empty-copy">完成并归档的项目会保留在这里，方便日后检索与回看。</p>
+              </aside>
+            </div>
+          </div>
+
+          <figcaption class="ui-figure-caption">
+            <span>图 04 / 项目总览界面切片</span>
+            <span>页面标题、表格、表单、状态与空状态均为角色级样式</span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="chapter" id="measures" aria-labelledby="measures-title">
+        <header>
+          <p class="chapter-index">05 / 度量</p>
+          <div class="chapter-rule" aria-hidden="true"></div>
+          <h2 class="chapter-title" id="measures-title">度量</h2>
+          <p class="chapter-lede">度量不是感觉。字号与间距只能从两把尺子上取。</p>
+        </header>
+
+        <div class="metrics-layout grid12">
+          <div class="spacing-block">
+            <div class="metric-head">
+              <h3 class="metric-title">间距刻度</h3>
+              <p class="metric-unit">PX / 1rem = 16px</p>
+            </div>
+            <ol class="space-list">
+              <li class="space-row">
+                <span class="space-token">space-1</span>
+                <span class="space-bar" style="width: var(--space-1)"></span>
+                <span class="space-value">4</span>
+              </li>
+              <li class="space-row">
+                <span class="space-token">space-2</span>
+                <span class="space-bar" style="width: var(--space-2)"></span>
+                <span class="space-value">8</span>
+              </li>
+              <li class="space-row">
+                <span class="space-token">space-3</span>
+                <span class="space-bar" style="width: var(--space-3)"></span>
+                <span class="space-value">12</span>
+              </li>
+              <li class="space-row">
+                <span class="space-token">space-4</span>
+                <span class="space-bar" style="width: var(--space-4)"></span>
+                <span class="space-value">16</span>
+              </li>
+              <li class="space-row">
+                <span class="space-token">space-5</span>
+                <span class="space-bar" style="width: var(--space-5)"></span>
+                <span class="space-value">24</span>
+              </li>
+              <li class="space-row">
+                <span class="space-token">space-6</span>
+                <span class="space-bar" style="width: var(--space-6)"></span>
+                <span class="space-value">32</span>
+              </li>
+              <li class="space-row">
+                <span class="space-token">space-7</span>
+                <span class="space-bar" style="width: var(--space-7)"></span>
+                <span class="space-value">48</span>
+              </li>
+              <li class="space-row">
+                <span class="space-token">space-8</span>
+                <span class="space-bar" style="width: var(--space-8)"></span>
+                <span class="space-value">64</span>
+              </li>
+            </ol>
+            <p class="metric-footnote">标题上方的间距至少是下方的 1.5 倍。</p>
+          </div>
+
+          <div class="type-block">
+            <div class="metric-head">
+              <h3 class="metric-title">字号阶梯</h3>
+              <p class="metric-unit">6 STEPS / PX</p>
+            </div>
+            <ol class="font-ruler" aria-label="字号阶梯：12、14、16、20、28、48 像素">
+              <li class="ruler-step">
+                <span class="ruler-glyph glyph-caption" aria-hidden="true">永</span>
+                <span class="ruler-value">12</span>
+                <span class="ruler-token">caption</span>
+              </li>
+              <li class="ruler-step">
+                <span class="ruler-glyph glyph-label" aria-hidden="true">永</span>
+                <span class="ruler-value">14</span>
+                <span class="ruler-token">label</span>
+              </li>
+              <li class="ruler-step">
+                <span class="ruler-glyph glyph-body" aria-hidden="true">永</span>
+                <span class="ruler-value">16</span>
+                <span class="ruler-token">body</span>
+              </li>
+              <li class="ruler-step">
+                <span class="ruler-glyph glyph-section" aria-hidden="true">永</span>
+                <span class="ruler-value">20</span>
+                <span class="ruler-token">section</span>
+              </li>
+              <li class="ruler-step">
+                <span class="ruler-glyph glyph-page" aria-hidden="true">永</span>
+                <span class="ruler-value">28</span>
+                <span class="ruler-token">page</span>
+              </li>
+              <li class="ruler-step">
+                <span class="ruler-glyph glyph-display" aria-hidden="true">永</span>
+                <span class="ruler-value">48</span>
+                <span class="ruler-token">display</span>
+              </li>
+            </ol>
+            <p class="metric-footnote">“永”字覆盖侧、勒、努、趯、策、掠、啄、磔，适合检查字形在各种尺度下的收放。</p>
+          </div>
+        </div>
+
+        <p class="axiom">字号只从阶梯取，间距只从刻度取。</p>
+      </section>
+
+      <section class="chapter" id="antipatterns" aria-labelledby="antipatterns-title">
+        <header>
+          <p class="chapter-index">06 / 反模式</p>
+          <div class="chapter-rule" aria-hidden="true"></div>
+          <h2 class="chapter-title" id="antipatterns-title">反模式</h2>
+          <p class="chapter-lede">四组反例，全部来自真实页面。左为失败方式，右为对应约束。</p>
+        </header>
+
+        <p class="anti-note">反例中的具体 px 值与字重只用于教学演示，不得提取为 token。最后一组把全页 6 种字号、4 种字重压缩为 3 种字号、2 种字重。</p>
+
+        <article class="anti-item">
+          <div class="anti-item-head">
+            <p class="anti-index">01</p>
+            <h3 class="anti-title">正文太小，行高太紧</h3>
+          </div>
+          <div class="anti-grid grid12">
+            <div class="anti-cell bad">
+              <p class="anti-label">不要</p>
+              <div class="anti-demo">
+                <p class="demo-13-13">正文被压进 13px 的行里，笔画挤在一起，读两行就要停下来。段落越长，这种疲劳越明显。</p>
+              </div>
+              <p class="anti-code">font-size: 13px; line-height: 1.3;</p>
+            </div>
+            <div class="anti-cell good">
+              <p class="anti-label">应当</p>
+              <div class="anti-demo">
+                <p class="demo-body-good">正文回到 16px 与 1.75 倍行高，笔画之间重新有了呼吸，长段落也能保持稳定节奏。</p>
+              </div>
+              <p class="anti-code">font-size: var(--text-body-size); line-height: var(--text-body-leading);</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="anti-item">
+          <div class="anti-item-head">
+            <p class="anti-index">02</p>
+            <h3 class="anti-title">给中文正文加字距</h3>
+          </div>
+          <div class="anti-grid grid12">
+            <div class="anti-cell bad">
+              <p class="anti-label">不要</p>
+              <div class="anti-demo">
+                <p class="demo-tracking-bad">中文字距被拉开之后，方块的节奏散掉了，读者只能逐字辨认，行气也随之消失。</p>
+              </div>
+              <p class="anti-code">letter-spacing: 0.12em;</p>
+            </div>
+            <div class="anti-cell good">
+              <p class="anti-label">应当</p>
+              <div class="anti-demo">
+                <p class="demo-tracking-good">中文字距保持为零，方块节奏完整，眼睛可以顺着词组而不是单字前进。</p>
+              </div>
+              <p class="anti-code">letter-spacing: 0;</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="anti-item">
+          <div class="anti-item-head">
+            <p class="anti-index">03</p>
+            <h3 class="anti-title">用 break-all 截断英文单词</h3>
+          </div>
+          <div class="anti-grid grid12">
+            <div class="anti-cell bad">
+              <p class="anti-label">不要</p>
+              <div class="anti-demo">
+                <div class="break-box">
+                  <p class="demo-break-bad" lang="en">Keep every English word whole when the line ends. Typography should never fracture internationalization into arbitrary fragments.</p>
+                </div>
+              </div>
+              <p class="anti-code">word-break: break-all;</p>
+            </div>
+            <div class="anti-cell good">
+              <p class="anti-label">应当</p>
+              <div class="anti-demo">
+                <div class="break-box">
+                  <p class="demo-break-good" lang="en">Keep every English word whole when the line ends. Typography should never fracture internationalization into arbitrary fragments.</p>
+                </div>
+              </div>
+              <p class="anti-code">overflow-wrap: break-word; line-break: strict;</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="anti-item">
+          <div class="anti-item-head">
+            <p class="anti-index">04</p>
+            <h3 class="anti-title">每种字号和字重都更响一点</h3>
+          </div>
+          <div class="anti-grid grid12">
+            <div class="anti-cell bad">
+              <p class="anti-label">不要</p>
+              <div class="anti-demo">
+                <div class="mini-page">
+                  <p class="noise-title">项目归档</p>
+                  <p class="noise-meta">上周 / 12 个项目</p>
+                  <p class="noise-copy">内容归档后仍可检索。</p>
+                  <p class="noise-label">负责人</p>
+                  <p class="noise-value">所有成员</p>
+                  <p class="noise-action">查看详情</p>
+                </div>
+              </div>
+              <p class="anti-code">全页 6 种字号、4 种字重 / 噪声</p>
+            </div>
+            <div class="anti-cell good">
+              <p class="anti-label">应当</p>
+              <div class="anti-demo">
+                <div class="mini-page">
+                  <p class="calm-title">项目归档</p>
+                  <p class="calm-meta">上周 / 12 个项目</p>
+                  <p class="calm-copy">内容归档后仍可检索历史记录，并导出摘要。</p>
+                  <p class="calm-label">负责人</p>
+                  <p class="calm-value">所有成员</p>
+                </div>
+              </div>
+              <p class="anti-code">全页 3 种字号、2 种字重 / 层级清楚</p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer" aria-labelledby="sources-title">
+      <div class="footer-main grid12">
+        <div class="footer-sources-block">
+          <h2 class="footer-label" id="sources-title">来源 / SOURCES</h2>
+          <ul class="sources" aria-label="参考来源链接，均在新窗口打开">
+            <li><a href="https://www.w3.org/TR/clreq/" target="_blank" rel="noopener noreferrer">W3C clreq<span class="sr-only">（在新窗口打开）</span></a></li>
+            <li><a href="https://ant.design/docs/spec/font-cn" target="_blank" rel="noopener noreferrer">Ant Design Font<span class="sr-only">（在新窗口打开）</span></a></li>
+            <li><a href="https://carbondesignsystem.com/elements/typography/overview/" target="_blank" rel="noopener noreferrer">IBM Carbon Typography<span class="sr-only">（在新窗口打开）</span></a></li>
+            <li><a href="https://designsystem.digital.gov/components/typography/" target="_blank" rel="noopener noreferrer">USWDS Typography<span class="sr-only">（在新窗口打开）</span></a></li>
+            <li><a href="https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html" target="_blank" rel="noopener noreferrer">WCAG 1.4.12<span class="sr-only">（在新窗口打开）</span></a></li>
+            <li><a href="https://www.designtokens.org/" target="_blank" rel="noopener noreferrer">DTCG<span class="sr-only">（在新窗口打开）</span></a></li>
+          </ul>
+        </div>
+        <p class="footer-disclaimer">本页为规格标本，含反例与密度对照，页内字号/字重计数不代表产品页上限；数值以 tokens.css 为准。</p>
+      </div>
+      <div class="footer-base">
+        <span>中英双语文排系统 / v0.1</span>
+        <span><time datetime="2026-11-20">2026-11-20</time> / zh-CN</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      // 1. 密度切换：只改 #type-scale 的 data-density，字号与行高由 CSS 变量接管。
+      const stage = document.getElementById("type-scale");
+      const densityButtons = Array.from(document.querySelectorAll("[data-set-density]"));
+
+      densityButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          stage.dataset.density = button.dataset.setDensity;
+          densityButtons.forEach((item) => {
+            item.setAttribute("aria-pressed", String(item === button));
+          });
+        });
+      });
+
+      // 2. 中英自动间距：切换 data-autospace，由 CSS 决定 text-autospace。
+      const autospaceToggle = document.getElementById("autospace-toggle");
+      const autospaceDemo = document.getElementById("autospace-demo");
+
+      autospaceToggle.addEventListener("click", () => {
+        const next = autospaceToggle.getAttribute("aria-pressed") !== "true";
+        autospaceToggle.setAttribute("aria-pressed", String(next));
+        autospaceDemo.dataset.autospace = next ? "on" : "off";
+        autospaceToggle.querySelector("[data-state]").textContent = next ? "开" : "关";
+      });
+
+      // 3. 标点挤压：切换 data-trim，由 CSS 决定 text-spacing-trim。
+      const trimToggle = document.getElementById("trim-toggle");
+      const trimDemo = document.getElementById("trim-demo");
+
+      trimToggle.addEventListener("click", () => {
+        const next = trimToggle.getAttribute("aria-pressed") !== "true";
+        trimToggle.setAttribute("aria-pressed", String(next));
+        trimDemo.dataset.trim = next ? "on" : "off";
+        trimToggle.querySelector("[data-state]").textContent = next ? "开" : "关";
+      });
+    })();
+  </script>
+</body>
+</html>
