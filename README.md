@@ -16,7 +16,7 @@ This skill gives an agent:
 - **Token architecture** — CSS, DTCG, Tailwind v4, and Figma naming that match.
 - **Enforcement** — AGENTS.md rules, Stylelint/ESLint config, a zero-dependency audit script, and a visual QA protocol.
 
-The skill body is written in Chinese because the domain is Chinese–English typesetting; code, tokens, commands, and the reference tables are language-neutral.
+English is the default: `SKILL.md` and `references/en/`. A complete Chinese version is included as `SKILL.zh-CN.md` and `references/`.
 
 ## Install
 
@@ -67,16 +67,26 @@ Rules that matter more than the numbers:
 
 ```
 skills/typography-system/
-├── SKILL.md                  # contract + router (the only file always loaded)
+├── SKILL.md                  # English contract + router (always loaded)
+├── SKILL.zh-CN.md            # Chinese contract + router
 ├── references/
-│   ├── 01-principles.md      # hierarchy, restraint, rhythm, typographic color
-│   ├── 02-scale.md           # ramp construction, leading, weights, tracking
-│   ├── 03-bilingual.md       # font stacks, punctuation, line breaking, numbers
-│   ├── 04-scenarios.md       # productive / reading / expressive / reference / presentation
-│   ├── 05-components.md      # headings, buttons, tables, forms, navigation, charts
-│   ├── 06-tokens.md          # CSS, DTCG, Tailwind, Figma, native mapping
-│   ├── 07-enforcement.md     # AGENTS.md, lint, CI, visual QA
-│   └── 08-sources.md         # annotated sources with caveats
+│   ├── 01-principles.md      # Chinese: hierarchy, rhythm, typographic color
+│   ├── 02-scale.md
+│   ├── 03-bilingual.md
+│   ├── 04-scenarios.md
+│   ├── 05-components.md
+│   ├── 06-tokens.md
+│   ├── 07-enforcement.md
+│   ├── 08-sources.md
+│   └── en/                   # English translations, one per layer
+│       ├── 01-principles.md
+│       ├── 02-scale.md
+│       ├── 03-bilingual.md
+│       ├── 04-scenarios.md
+│       ├── 05-components.md
+│       ├── 06-tokens.md
+│       ├── 07-enforcement.md
+│       └── 08-sources.md
 ├── templates/
 │   ├── tokens.css
 │   ├── tokens.tokens.json

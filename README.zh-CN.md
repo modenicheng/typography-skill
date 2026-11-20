@@ -16,7 +16,7 @@ Agent 生成的界面，排版问题几乎都长一个样：每个组件各自�
 - **Token 架构**：CSS、DTCG、Tailwind v4、Figma 命名一一对应。
 - **约束手段**：AGENTS.md 规则、Stylelint/ESLint、零依赖审计脚本、视觉验收协议。
 
-技能正文用中文写，因为领域本身是中文排版；代码、token、命令和参考表是语言中立的。
+技能正文默认英文（`SKILL.md` 与 `references/en/`），同时保留完整中文版（`SKILL.zh-CN.md` 与 `references/`）。
 
 ## 安装
 
@@ -67,16 +67,26 @@ CLI 会把 skill 复制到 `.agents/skills/typography-system`，再链接进对�
 
 ```
 skills/typography-system/
-├── SKILL.md                  # 契约 + 路由（唯一常驻上下文）
-├── references/
-│   ├── 01-principles.md      # 层级、克制、节奏、排版颜色
-│   ├── 02-scale.md           # 阶梯构造、行高、字重、字距
-│   ├── 03-bilingual.md       # 字体栈、标点、断行、数字
-│   ├── 04-scenarios.md       # 工作 / 阅读 / 表达 / 参考 / 演示
-│   ├── 05-components.md      # 标题、按钮、表格、表单、导航、图表
-│   ├── 06-tokens.md          # CSS、DTCG、Tailwind、Figma、原生映射
-│   ├── 07-enforcement.md     # AGENTS.md、lint、CI、视觉验收
-│   └── 08-sources.md         # 逐条标注的来源与折扣
+├── SKILL.md                  # 英文契约 + 路由（唯一常驻上下文）
+├── SKILL.zh-CN.md            # 中文契约 + 路由
+├── references/               # 中文分层文档
+│   ├── 01-principles.md
+│   ├── 02-scale.md
+│   ├── 03-bilingual.md
+│   ├── 04-scenarios.md
+│   ├── 05-components.md
+│   ├── 06-tokens.md
+│   ├── 07-enforcement.md
+│   ├── 08-sources.md
+│   └── en/                   # 对应英文版
+│       ├── 01-principles.md
+│       ├── 02-scale.md
+│       ├── 03-bilingual.md
+│       ├── 04-scenarios.md
+│       ├── 05-components.md
+│       ├── 06-tokens.md
+│       ├── 07-enforcement.md
+│       └── 08-sources.md
 ├── templates/
 │   ├── tokens.css
 │   ├── tokens.tokens.json

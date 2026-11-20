@@ -22,8 +22,8 @@ Use only these semantic roles. Never invent a size, weight, or role.
 
 | Role | Size | CJK line-height | Latin line-height | Weight |
 |---|---|---|---|---|
-| page-title | 28px | 40px | 36px | 600 |
-| section-title | 20px | 30px | 28px | 600 |
+| page | 28px | 40px | 36px | 600 |
+| section | 20px | 30px | 28px | 600 |
 | body | 16px | 28px | 24px | 400 |
 | label | 14px | 22px | 20px | 500 |
 | caption | 12px | 18px | 16px | 400 |
